@@ -31,4 +31,6 @@ int score(point_t loc, int board[M][N]);
 
 bool terminal(point_t loc, int board[M][N]);
 
+void init_board(int board[M][N]);
+
 #endif

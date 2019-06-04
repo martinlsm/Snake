@@ -36,3 +36,20 @@ bool terminal(point_t loc, int board[M][N])
 	int	val = board[loc.row][loc.col];
 	return (val > 0 || val == WALL);
 }
+
+void init_board(int board[M][N])
+{
+	for (int i = 0; i < M; ++i) {
+		board[i][0] = WALL;
+		board[i][N - 1] = WALL;
+	}
+
+	for (int j = 0; j < N; ++j) {
+		board[0][j] = WALL;
+		board[M - 1][j] = WALL;
+	}
+
+	for (int i = 1; i < M - 1; ++i)
+		for (int j = 1; j < N - 1; ++j)
+			board[i][j] = GROUND;
+}

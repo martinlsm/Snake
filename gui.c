@@ -21,6 +21,7 @@ void update_gui(char guiboard[M][N], int board[M][N], snake_t snake)
 
 	size_t head = snake.head_index;
 	size_t len = snake.len;
+
 	for (size_t i = 0; i < len; ++i) {
 		point_t p = snake.body[(i + head) % SNAKE_MAX_LEN];
 		guiboard[p.row][p.col] = 'S';
@@ -31,10 +32,9 @@ void draw(char guiboard[M][N], int score)
 {
 	for (int i = 0; i < M; ++i) {
 		for (int j = 0; j < N; ++j) {
-			addch(guiboard[i][j]);
+			printw("%c", guiboard[i][j]);
 		}
-		addch('\n');
+		printw("\n");
 	}
 	printw("\n\nCurrent score: %d\n", score);
-	refresh();
 }

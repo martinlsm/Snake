@@ -1,4 +1,5 @@
 #include "snake.h"
+#include <stdio.h>
 
 snake_t* new_snake(size_t len, point_t start_pos, signed char heading_dir)
 {
@@ -25,9 +26,13 @@ snake_t* new_snake(size_t len, point_t start_pos, signed char heading_dir)
 			delta_row = -1;
 			break;
 	}
+
+	size_t place_row = start_pos.row;
+	size_t place_col = start_pos.col;
 	for (size_t i = 0; i < len; ++i) {
-		snake->body[i] = (point_t){ start_pos.row + delta_row,
-		                            start_pos.col + delta_col };
+		snake->body[i] = (point_t){ place_row, place_col };
+		place_row += delta_row;
+		place_col += delta_col;
 	}
 
 	return snake;
@@ -48,7 +53,11 @@ void move_snake(snake_t* snake, signed char turn_dir, int board[M][N], bool* ate
 	curr_pos = snake->body[snake->head_index];
 	next_heading_dir = (snake->heading_dir + turn_dir) % 4;
 	next_pos = next_point(curr_pos, next_heading_dir);
-	next_head_index = (snake->head_index - 1) % SNAKE_MAX_LEN;
+
+	if (snake->head_index > 0)
+		next_head_index = snake->head_index - 1;
+	else
+		next_head_index = SNAKE_MAX_LEN - 1;
 
 	if (board[next_pos.col][next_pos.col] == APPLE) {
 		*ate_apple = true;
