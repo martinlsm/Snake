@@ -38,7 +38,7 @@ void free_snake(snake_t* snake) {
 	free(snake);
 }
 
-void move(snake_t* snake, signed char turn_dir, int board[M][N], bool* ate_apple)
+void move_snake(snake_t* snake, signed char turn_dir, int board[M][N], bool* ate_apple)
 {
 	point_t			curr_pos;
 	point_t			next_pos;
@@ -72,28 +72,4 @@ point_t* empty_positions(int board[M][N], size_t* size)
 	*size = k;
 	return p;
 
-}
-
-void draw_snake(int board[M][N], snake_t snake)
-{
-	point_t 	p;
-	int		draw_val = snake.len + 1;
-
-	for (size_t i = snake.head_index; i < snake.len; ++i) {
-		p = snake.body[i % SNAKE_MAX_LEN];
-		board[p.row][p.col] = draw_val--;
-	}
-
-}
-
-void redraw_after_step(int board[M][N], snake_t snake)
-{
-	point_t 	last_tail_tip;
-	point_t		current_head;
-
-	current_head = snake.body[snake.head_index];
-	last_tail_tip = snake.body[(snake.head_index + snake.len)
-	                           % SNAKE_MAX_LEN];
-	board[current_head.row][current_head.col] = snake.len + 1;
-	board[last_tail_tip.row][last_tail_tip.col] = 0;
 }

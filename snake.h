@@ -17,10 +17,6 @@ snake_t* new_snake(size_t len, point_t start_pos, signed char heading_dir);
 
 void free_snake(snake_t*);
 
-void move(snake_t* snake, signed char turn_dir, int board[M][N], bool* ate_apple);
-
-void draw_snake(int board[M][N], snake_t snake);
-
-void redraw_after_step(int board[M][N], snake_t snake);
+void move_snake(snake_t* snake, signed char turn_dir, int board[M][N], bool* ate_apple);
 
 #endif
