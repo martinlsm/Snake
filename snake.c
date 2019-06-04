@@ -1,13 +1,11 @@
 #include "snake.h"
 
-snake_t* new_snake(size_t len, size_t max_len,
-                   point_t start_pos, signed char heading_dir)
+snake_t* new_snake(size_t len, point_t start_pos, signed char heading_dir)
 {
 	snake_t* snake = malloc(sizeof(snake_t));
 
 	snake->len = len;
-	snake->max_len = max_len;
-	snake->body = malloc(max_len * sizeof(point_t));
+	snake->body = malloc(SNAKE_MAX_LEN * sizeof(point_t));
 	snake->head_index = 0;
 	snake->heading_dir = heading_dir;
 
@@ -40,7 +38,7 @@ void free_snake(snake_t* snake) {
 	free(snake);
 }
 
-void move(snake_t* snake, signed char turn_dir, int board[M][N])
+void move(snake_t* snake, signed char turn_dir, int board[M][N], bool* ate_apple)
 {
 	point_t			curr_pos;
 	point_t			next_pos;
@@ -50,12 +48,52 @@ void move(snake_t* snake, signed char turn_dir, int board[M][N])
 	curr_pos = snake->body[snake->head_index];
 	next_heading_dir = (snake->heading_dir + turn_dir) % 4;
 	next_pos = next_point(curr_pos, next_heading_dir);
-	next_head_index = (snake->head_index - 1) % snake->max_len;
+	next_head_index = (snake->head_index - 1) % SNAKE_MAX_LEN;
 
-	if (board[next_pos.col][next_pos.col] == APPLE)
+	if (board[next_pos.col][next_pos.col] == APPLE) {
+		*ate_apple = true;
 		++snake->len;
+	}
 
 	snake->body[next_head_index] = next_pos;
 	snake->heading_dir = next_heading_dir;
 	snake->head_index = next_head_index;
+}
+
+point_t* empty_positions(int board[M][N], size_t* size)
+{
+	int		k = 0;
+	point_t* 	p = malloc(M*N * sizeof(point_t));
+
+	for (int i = 0; i < M; ++i)
+		for (int j = 0; j < N; ++j)
+			if (board[i][j] == GROUND)
+				p[k++] = (point_t){i,j};
+	*size = k;
+	return p;
+
+}
+
+void draw_snake(int board[M][N], snake_t snake)
+{
+	point_t 	p;
+	int		draw_val = snake.len + 1;
+
+	for (size_t i = snake.head_index; i < snake.len; ++i) {
+		p = snake.body[i % SNAKE_MAX_LEN];
+		board[p.row][p.col] = draw_val--;
+	}
+
+}
+
+void redraw_after_step(int board[M][N], snake_t snake)
+{
+	point_t 	last_tail_tip;
+	point_t		current_head;
+
+	current_head = snake.body[snake.head_index];
+	last_tail_tip = snake.body[(snake.head_index + snake.len)
+	                           % SNAKE_MAX_LEN];
+	board[current_head.row][current_head.col] = snake.len + 1;
+	board[last_tail_tip.row][last_tail_tip.col] = 0;
 }
