@@ -2,6 +2,8 @@
 #include <memory.h>
 #include "snake.h"
 
+#define snake_body_part(snake, n)	(((snake).head_index + (n)) % SNAKE_MAX_LEN)
+
 snake_t* new_snake(size_t len, point_t start_pos, signed char heading_dir)
 {
 	snake_t* snake = malloc(sizeof(snake_t));
@@ -52,7 +54,7 @@ void move_snake(snake_t* snake, signed char turn_dir, int board[M][N], bool* ate
 	signed char		next_heading_dir;
 
 	curr_pos = snake->body[snake->head_index];
-	next_heading_dir = (snake->heading_dir + turn_dir) % 4;
+	next_heading_dir = (4 + snake->heading_dir + turn_dir) % 4;
 	next_pos = next_point(curr_pos, next_heading_dir);
 
 	if (snake->head_index > 0)
@@ -60,9 +62,10 @@ void move_snake(snake_t* snake, signed char turn_dir, int board[M][N], bool* ate
 	else
 		next_head_index = SNAKE_MAX_LEN - 1;
 
-	if (board[next_pos.col][next_pos.col] == APPLE) {
+	if (board[next_pos.row][next_pos.col] == APPLE) {
 		*ate_apple = true;
 		++snake->len;
+		board[next_pos.row][next_pos.col] = GROUND;
 	}
 
 	snake->body[next_head_index] = next_pos;
@@ -93,7 +96,7 @@ void spawn_apple(int board[M][N], snake_t snake)
 
 	memcpy(board_with_snake, board, M*N);
 	for (size_t i = 0; i < snake.len; ++i) {
-		size_t index = snake.head_index + i;
+		size_t index = (snake.head_index + i) % SNAKE_MAX_LEN;
 		point_t p = snake.body[index];
 		board_with_snake[p.row][p.col] = WALL; // mark snake body as wall
 	}

@@ -36,7 +36,8 @@ int main() {
 	int		board[M][N];
 	char		guiboard[M][N];
 	snake_t* 	snake;
-	signed char	ai_action;
+	signed char	action = FORWARD;
+	int		score = 0;
 	bool		ate_apple = false;
 
 	init_board(board);
@@ -47,19 +48,34 @@ int main() {
 	initscr();
 #endif
 
-	for (int i = 0; i < 5; ++i) {
-	// while (!terminal(snake->body[snake->head_index], board)) {
+	while (!terminal(snake->body[snake->head_index], board)) {
 
 		update_gui(guiboard, board, *snake);
 #ifdef GUI
-		draw(guiboard, 0);
+		draw(guiboard, score);
 		refresh();
-		getch();
+		int keypress = getch();
+		switch (keypress) {
+		case 'a':
+			action = LEFT;
+			break;
+		case 'd':
+			action = RIGHT;
+			break;
+		default:
+			action = FORWARD;
+			break;
+		}
 		clear();
 #endif
 
-		ai_action = FORWARD;
-		move_snake(snake, ai_action, board, &ate_apple);
+		move_snake(snake, action, board, &ate_apple);
+
+		if (ate_apple) {
+			spawn_apple(board, *snake);
+			ate_apple = false;
+			score += 1;
+		}
 	}
 
 #ifdef GUI
