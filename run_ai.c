@@ -1,3 +1,4 @@
+#include <time.h>
 #include "gui.h"
 
 #define GUI
@@ -30,6 +31,8 @@ static void print_snake(snake_t snake)
 }
 */
 int main() {
+	srand(time(NULL));
+
 	int		board[M][N];
 	char		guiboard[M][N];
 	snake_t* 	snake;
@@ -38,6 +41,7 @@ int main() {
 
 	init_board(board);
  	snake = new_snake(3, START_POS, START_HEADING);
+	spawn_apple(board, *snake);
 
 #ifdef GUI
 	initscr();

@@ -19,4 +19,6 @@ void free_snake(snake_t*);
 
 void move_snake(snake_t* snake, signed char turn_dir, int board[M][N], bool* ate_apple);
 
+void spawn_apple(int board[M][N], snake_t snake);
+
 #endif

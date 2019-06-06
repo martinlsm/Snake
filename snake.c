@@ -1,5 +1,6 @@
-#include "snake.h"
 #include <stdio.h>
+#include <memory.h>
+#include "snake.h"
 
 snake_t* new_snake(size_t len, point_t start_pos, signed char heading_dir)
 {
@@ -81,4 +82,30 @@ point_t* empty_positions(int board[M][N], size_t* size)
 	*size = k;
 	return p;
 
+}
+
+void spawn_apple(int board[M][N], snake_t snake)
+{
+	int		board_with_snake[M][N];
+	point_t		free_spots[M*N];
+	int		n = 0;
+
+
+	memcpy(board_with_snake, board, M*N);
+	for (size_t i = 0; i < snake.len; ++i) {
+		size_t index = snake.head_index + i;
+		point_t p = snake.body[index];
+		board_with_snake[p.row][p.col] = WALL; // mark snake body as wall
+	}
+
+	for (int i = 0; i < M; ++i) {
+		for (int j = 0; j < N; ++j) {
+			if (board_with_snake[i][j] == GROUND)
+				free_spots[n++] = (point_t){ i, j };
+		}
+	}
+
+	int	random = rand() % n;
+	point_t	apple_p = free_spots[random];
+	board[apple_p.row][apple_p.col] = APPLE;
 }
