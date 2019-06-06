@@ -73,20 +73,6 @@ void move_snake(snake_t* snake, signed char turn_dir, int board[M][N], bool* ate
 	snake->head_index = next_head_index;
 }
 
-point_t* empty_positions(int board[M][N], size_t* size)
-{
-	int		k = 0;
-	point_t* 	p = malloc(M*N * sizeof(point_t));
-
-	for (int i = 0; i < M; ++i)
-		for (int j = 0; j < N; ++j)
-			if (board[i][j] == GROUND)
-				p[k++] = (point_t){i,j};
-	*size = k;
-	return p;
-
-}
-
 void spawn_apple(int board[M][N], snake_t snake)
 {
 	int		board_with_snake[M][N];
