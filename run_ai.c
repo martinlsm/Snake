@@ -48,7 +48,7 @@ int main() {
 	initscr();
 #endif
 
-	while (!terminal(snake->body[snake->head_index], board)) {
+	while (!terminal(board, *snake)) {
 
 		update_gui(guiboard, board, *snake);
 #ifdef GUI

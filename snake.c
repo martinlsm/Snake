@@ -98,3 +98,16 @@ void spawn_apple(int board[M][N], snake_t snake)
 	point_t	apple_p = free_spots[random];
 	board[apple_p.row][apple_p.col] = APPLE;
 }
+
+bool terminal(int board[M][N], snake_t snake)
+{
+	point_t		head = snake.body[snake.head_index];
+	int		head_point = board[head.row][head.col];
+	for (size_t i = 1; i < snake.len; ++i) {
+		size_t index = (snake.head_index + i) % SNAKE_MAX_LEN;
+		point_t p = snake.body[index];
+		if (p.row == head.row && p.col == head.col)
+			return true;
+	}
+	return (head_point > 0 || head_point == WALL);
+}

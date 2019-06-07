@@ -29,8 +29,6 @@ point_t next_point(point_t from, signed char heading_dir);
 
 int score(point_t loc, int board[M][N]);
 
-bool terminal(point_t loc, int board[M][N]);
-
 void init_board(int board[M][N]);
 
 #endif

@@ -31,12 +31,6 @@ int score(point_t loc, int board[M][N])
 		return 0;
 }
 
-bool terminal(point_t loc, int board[M][N])
-{
-	int	val = board[loc.row][loc.col];
-	return (val > 0 || val == WALL);
-}
-
 void init_board(int board[M][N])
 {
 	for (int i = 0; i < M; ++i) {
