@@ -1,7 +1,19 @@
 #include <time.h>
-#include "gui.h"
 
 #define GUI
+#define AI
+
+#ifdef GUI
+#include "gui.h"
+#ifdef AI
+#include "ai.h"
+#endif
+#else
+#include <stdio.h>
+#include "snake.h"
+#include "board.h"
+#endif
+
 
 #define START_LEN		(3)
 #define START_HEADING		(NORTH)
@@ -34,7 +46,6 @@ int main() {
 	srand(time(NULL));
 
 	int		board[M][N];
-	char		guiboard[M][N];
 	snake_t* 	snake;
 	signed char	action = FORWARD;
 	int		score = 0;
@@ -45,15 +56,20 @@ int main() {
 	spawn_apple(board, *snake);
 
 #ifdef GUI
+	char		guiboard[M][N];
 	initscr();
 #endif
 
 	while (!terminal(board, *snake)) {
 
-		update_gui(guiboard, board, *snake);
 #ifdef GUI
+		update_gui(guiboard, board, *snake);
 		draw(guiboard, score);
 		refresh();
+#ifdef AI
+		action = ai_action(snake, board);
+		getch(); // replace this
+#else
 		int keypress = getch();
 		switch (keypress) {
 		case 'a':
@@ -66,6 +82,7 @@ int main() {
 			action = FORWARD;
 			break;
 		}
+#endif
 		clear();
 #endif
 
@@ -79,7 +96,13 @@ int main() {
 	}
 
 #ifdef GUI
+	clear();
+	printw("Final score: %d\n", score);
+	refresh();
+	getch();
 	endwin();
+#else
+	printf("Final score: %d\n", score);
 #endif
 	free_snake(snake);
 	return 0;

@@ -4,7 +4,7 @@
 
 #define snake_body_part(snake, n)	(((snake).head_index + (n)) % SNAKE_MAX_LEN)
 
-snake_t* new_snake(size_t len, point_t start_pos, signed char heading_dir)
+snake_t* new_snake(size_t len, point_t start_pos, heading_t heading_dir)
 {
 	snake_t* snake = malloc(sizeof(snake_t));
 
@@ -46,15 +46,15 @@ void free_snake(snake_t* snake) {
 	free(snake);
 }
 
-void move_snake(snake_t* snake, signed char turn_dir, int board[M][N], bool* ate_apple)
+void move_snake(snake_t* snake, action_t action, int board[M][N], bool* ate_apple)
 {
 	point_t			curr_pos;
 	point_t			next_pos;
 	size_t			next_head_index;
-	signed char		next_heading_dir;
+	heading_t		next_heading_dir;
 
 	curr_pos = snake->body[snake->head_index];
-	next_heading_dir = (4 + snake->heading_dir + turn_dir) % 4;
+	next_heading_dir = (4 + snake->heading_dir + action) % 4;
 	next_pos = next_point(curr_pos, next_heading_dir);
 
 	if (snake->head_index > 0)

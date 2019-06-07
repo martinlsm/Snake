@@ -5,8 +5,8 @@ TARGET = run_ai
 
 all: $(TARGET)
 
-$(TARGET): $(TARGET).c snake.o board.o gui.o
-	$(CC) $(CFLAGS) -o $(TARGET) $(TARGET).c snake.o board.o gui.o -lncurses
+$(TARGET): $(TARGET).c snake.o board.o gui.o ai.o
+	$(CC) $(CFLAGS) -o $(TARGET) $(TARGET).c snake.o board.o gui.o ai.o -lncurses
 
 clean:
 	rm -f $(TARGET) *.o

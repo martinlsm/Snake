@@ -1,6 +1,6 @@
 #include "snake.h"
 
-point_t next_point(point_t from, signed char heading_dir)
+point_t next_point(point_t from, heading_t heading_dir)
 {
 	point_t		new_point = from;
 
